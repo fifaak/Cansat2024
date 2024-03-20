@@ -1,4 +1,3 @@
-#include <Arduino.h>
 // Basic demo for accelerometer readings from Adafruit MPU6050
 
 #include <Adafruit_MPU6050.h>
@@ -21,7 +20,7 @@ void setup(void) {
       delay(10);
     }
   }
-  Serial.println("MPU6050 Found!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  Serial.println("MPU6050 Found!");
 
   mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
   Serial.print("Accelerometer range set to: ");
