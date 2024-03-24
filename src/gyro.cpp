@@ -32,4 +32,6 @@ void loop() {
   mpu.getEvent(&a, &g, &temp);  
   float acceleration = sqrt(a.acceleration.x * a.acceleration.x + a.acceleration.y * a.acceleration.y + a.acceleration.z * a.acceleration.z);
   Serial.println(acceleration);
+  delay(100); // Delay for stability
+
 }
