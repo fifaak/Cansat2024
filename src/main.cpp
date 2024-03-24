@@ -29,13 +29,12 @@ void Eject() {
 }
 void Lunching(sensors_event_t a, bool* pNormal_eject, bool* pEmergency_eject){
   while(!(*pNormal_eject || *pEmergency_eject)){
-    if ((millis() - start_time) > 10000){
+    if ((millis() - start_time) > 10000){ //set emergency time to 10sec
       Eject();
       *pEmergency_eject = true;
       *pNormal_eject = false;
     }
     int angle = sqrt(a.acceleration.x * a.acceleration.x + a.acceleration.y * a.acceleration.y);
-    // Serial.println("Lunching:");
     delay(100);
     Serial.println((millis() - start_time) / 1000);
   }
