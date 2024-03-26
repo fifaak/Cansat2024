@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_MPU6050.h>
@@ -42,4 +40,3 @@ void loop() {
   
   delay(100); // Delay for stability
 }
->>>>>>> refs/remotes/origin/deployment
