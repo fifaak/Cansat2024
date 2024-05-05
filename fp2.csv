@@ -1,0 +1,13 @@
+TASK,FREQUENCY,CMD,CODE
+Enable MPU6050,0,tc;mpu;1,os.system("test.py")
+Enable GPS,0,tc;gps;1,
+Enable BMP,0,tc;bmp;1,
+Enable MCP,0,tc;mcp;1,
+Disable MPU6050,0,tc;mpu;0,
+Disable GPS,0,tc;gps;0,
+Disable BMP,0,tc;gps;0,
+Disable MCP,0,tc;mcp;0,
+"get acc,gyro MPU",0.1,tm;mpu;2,
+"get lat,lon GPS",5,tm;gps;2,
+get pressure BMP,1,tm;bmp;2,
+get temp MCP,1,tm;mcp;2,

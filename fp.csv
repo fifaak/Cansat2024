@@ -1,0 +1,13 @@
+TASK,FREQUENCY,CMD,CODE
+Enable MPU6050,0,tc;mpu;1,os.system("python3 enable_mpu.py")
+Enable GPS,0,tc;gps;1,os.system("python3 enable_gps")
+Enable BMP,0,tc;bmp;1,os.system("python3 enable_bmp")
+Enable MCP,0,tc;mcp;1,os.system("python3 enable_mcp")
+Disable MPU6050,0,tc;mpu;0,os.system("python3 disable_mpu")
+Disable GPS,0,tc;gps;0,os.system("python3 disable_gps")
+Disable BMP,0,tc;gps;0,os.system("python3 disable_bmp")
+Disable MCP,0,tc;mcp;0,os.system("python3 disable_mcp")
+"get acc,gyro MPU",0.1,tm;mpu;2,os.system("python3 tm_mpu")
+"get lat,lon GPS",5,tm;gps;2,os.system("python3 tm_gps")
+get pressure BMP,1,tm;bmp;2,os.system("python3 tm_bmp")
+get temp MCP,1,tm;mcp;2,os.system("python3 tm_mcp")
