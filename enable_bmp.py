@@ -1,1 +1,1 @@
-print("enable_bmp")
+print("enable bmp")

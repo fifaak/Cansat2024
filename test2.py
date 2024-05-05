@@ -1,4 +1,5 @@
-i=0
-while(i<100):
-    print(i)
-    i+=1
+import subprocess
+
+result = subprocess.run(["python", "enable_mpu.py"], capture_output=True, text=True)
+
+print(result.stdout)

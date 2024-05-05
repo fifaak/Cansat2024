@@ -1,1 +1,1 @@
-print("disable_bmp")
+print("disable bmp")

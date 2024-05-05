@@ -1,1 +1,1 @@
-print("enable_mcp")
+print("enable mcp")
