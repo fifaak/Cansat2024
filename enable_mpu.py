@@ -1,9 +1,12 @@
-import datetime
+# enable_mpu
+import board
+import busio
+import adafruit_mpu6050
 
-def get_current_time():
-  """Prints the current date and time in a readable format."""
-  now = datetime.datetime.now()
-  print(now.strftime("%Y-%m-%d %H:%M:%S"))  # Format the output for better readability
+def enable_mpu():
+  
+  i2c = busio.I2C(board.SCL, board.SDA)
 
-if __name__ == "__main__":
-  get_current_time()
+  mpu = adafruit_mpu6050(i2c)
+
+  return mpu

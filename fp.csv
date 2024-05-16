@@ -5,7 +5,7 @@ Enable BMP,0,tc;bmp;1,"subprocess.run(['python', 'enable_bmp.py'], capture_outpu
 Enable MCP,0,tc;mcp;1,"subprocess.run(['python', 'enable_mcp.py'], capture_output=True, text=True).stdout"
 Disable MPU6050,0,tc;mpu;0,"subprocess.run(['python', 'disable_mpu.py'], capture_output=True, text=True).stdout"
 Disable GPS,0,tc;gps;0,"subprocess.run(['python', 'disable_gps.py'], capture_output=True, text=True).stdout"
-Disable BMP,0,tc;gps;0,"subprocess.run(['python', 'disable_bmp.py'], capture_output=True, text=True).stdout"
+Disable BMP,0,tc;bmp;0,"subprocess.run(['python', 'disable_bmp.py'], capture_output=True, text=True).stdout"
 Disable MCP,0,tc;mcp;0,"subprocess.run(['python', 'disable_mcp.py'], capture_output=True, text=True).stdout"
 "get acc,gyro MPU",0.1,tm;mpu;2,"subprocess.run(['python', 'tm_mpu.py'], capture_output=True, text=True).stdout"
 "get lat,lon GPS",5,tm;gps;2,"subprocess.run(['python', 'tm_gps.py'], capture_output=True, text=True).stdout"
