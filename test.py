@@ -13,18 +13,30 @@ def CMD2FREQ(cmd):
     mapping = dict(zip(df['CMD'], df['FREQUENCY']))
     return mapping.get(cmd, "Frequency not found")
 
-while(1):
-    CMD2CODE('tm;mpu;2')
-    time.sleep(CMD2FREQ('tm;mpu;2'))
-    
-while(1):
-    CMD2CODE('tm;bmp;2')
-    time.sleep(CMD2FREQ('tm;bmp;2'))
+# Initialize the next scheduled times
+next_time_mpu = time.time()
+next_time_bmp = time.time()
+next_time_mcp = time.time()
+next_time_gps = time.time()
 
-while(1):
-    CMD2CODE('tm;mcp;2')
-    time.sleep(CMD2FREQ('tm;mcp;2'))
+while True:
+    current_time = time.time()
 
-while(1):
-    CMD2CODE('tm;gps;2')
-    time.sleep(CMD2FREQ('tm;gps;2'))
+    if current_time >= next_time_mpu:
+        CMD2CODE('tm;mpu;2')
+        next_time_mpu = current_time + CMD2FREQ('tm;mpu;2')
+
+    if current_time >= next_time_bmp:
+        CMD2CODE('tm;bmp;2')
+        next_time_bmp = current_time + CMD2FREQ('tm;bmp;2')
+
+    if current_time >= next_time_mcp:
+        CMD2CODE('tm;mcp;2')
+        next_time_mcp = current_time + CMD2FREQ('tm;mcp;2')
+
+    if current_time >= next_time_gps:
+        CMD2CODE('tm;gps;2')
+        next_time_gps = current_time + CMD2FREQ('tm;gps;2')
+
+    # Small sleep to avoid busy-waiting
+    time.sleep(0.01)
