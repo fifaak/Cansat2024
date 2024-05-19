@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
+import cv2
 
 def GET_PIXEL(image_path, model_path, threshold_):
     # Dummy dice_coefficient function, replace it with your actual implementation
@@ -48,5 +49,26 @@ def GET_PIXEL(image_path, model_path, threshold_):
     # Apply threshold to the segmentation mask
     binary_mask = (segmentation_result > threshold).astype(np.uint8)
     oil_spill_area_pixel = np.sum(binary_mask)
-    
-    return oil_spill_area_pixel
+
+    # Load the original image
+    original_img = load_img(image_path)
+    original_img_array = img_to_array(original_img).astype(np.uint8)
+
+    # Resize the binary mask to the original image size
+    binary_mask_resized = cv2.resize(binary_mask, (original_img_array.shape[1], original_img_array.shape[0]), interpolation=cv2.INTER_NEAREST)
+
+    # Find contours in the binary mask
+    contours, _ = cv2.findContours(binary_mask_resized, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Draw polygons on the original image
+    original_img_with_contours = cv2.cvtColor(original_img_array, cv2.COLOR_RGB2BGR)  # Convert to BGR for OpenCV
+    cv2.polylines(original_img_with_contours, contours, isClosed=True, color=(0, 255, 0), thickness=2)  # Draw green polygons
+
+    # Convert back to RGB for displaying with matplotlib
+    original_img_with_contours = cv2.cvtColor(original_img_with_contours, cv2.COLOR_BGR2RGB)
+
+    # Display the image with polygons
+
+
+    return oil_spill_area_pixel,original_img_with_contours
+
