@@ -1,42 +1,32 @@
-import pandas as pd
-import subprocess
-import time
-df = pd.read_csv("./fp.csv")
+from time import sleep
+from sx127x.LoRa import LoRa
+from sx127x.board_config import BOARD
 
-def CMD2TASK(cmd):
-    mapping = dict(zip(df['CMD'], df['TASK']))
-    return mapping.get(cmd, "Task not found")
-def CMD2CODE(cmd):
-    mapping = dict(zip(df['CMD'], df['CODE']))
-    return eval(mapping.get(cmd, "Code not found"))
-def CMD2FREQ(cmd):
-    mapping = dict(zip(df['CMD'], df['FREQUENCY']))
-    return mapping.get(cmd, "Frequency not found")
+# Raspberry Pi SPI pins
+BOARD.setup()
 
-# Initialize the next scheduled times
-next_time_mpu = time.time()
-next_time_bmp = time.time()
-next_time_mcp = time.time()
-next_time_gps = time.time()
+# LoRa parameters
+frequency = 915.0  # Change this to match your frequency
+tx_power = 17  # dBm
+spreading_factor = 7
+coding_rate = 5
+bandwidth = 125000
 
-while True:
-    current_time = time.time()
+# Initialize LoRa
+lora = LoRa(frequency, tx_power, spreading_factor, coding_rate, bandwidth)
 
-    if current_time >= next_time_mpu:
-        CMD2CODE('tm;mpu;2')
-        next_time_mpu = current_time + CMD2FREQ('tm;mpu;2')
+# Initialize LoRa in receive mode
+lora.set_mode_rx()
 
-    if current_time >= next_time_bmp:
-        CMD2CODE('tm;bmp;2')
-        next_time_bmp = current_time + CMD2FREQ('tm;bmp;2')
+try:
+    while True:
+        if lora.received_packet():
+            packet = lora.read_payload()
+            print("Received:", packet.decode('utf-8'))
+            # You can add your processing code here
 
-    if current_time >= next_time_mcp:
-        CMD2CODE('tm;mcp;2')
-        next_time_mcp = current_time + CMD2FREQ('tm;mcp;2')
+        sleep(1)
 
-    if current_time >= next_time_gps:
-        CMD2CODE('tm;gps;2')
-        next_time_gps = current_time + CMD2FREQ('tm;gps;2')
-
-    # Small sleep to avoid busy-waiting
-    time.sleep(0.01)
+except KeyboardInterrupt:
+    print("Keyboard interrupt detected. Exiting...")
+    lora.set_mode_sleep()
