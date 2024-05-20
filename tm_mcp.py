@@ -1,8 +1,12 @@
-# tm_mcp
-from enable_mcp import enable_mcp
+# # tm_mcp
+# from enable_mcp import enable_mcp
 
-mcp = enable_mcp
+# mcp = enable_mcp
 
-def gettemp():
-    temperature = mcp.temperature
-    return temperature
+# def gettemp():
+#     temperature = mcp.temperature
+#     return temperature
+
+# print(gettemp())
+
+print("mcp")
