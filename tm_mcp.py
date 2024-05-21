@@ -1,12 +1,23 @@
 # # tm_mcp
-# from enable_mcp import enable_mcp
+from enable_mcp import enable_mcp
+import lora
+import time
 
-# mcp = enable_mcp
+mcp = enable_mcp
+lora = MyLora(verbose=True)
+timestamp = time.time()
 
-# def gettemp():
-#     temperature = mcp.temperature
-#     return temperature
+def gettemp():
+    temperature = mcp.temperature
+    return temperature
 
-# print(gettemp())
+valueSyncSec = str(timestamp)
+valueMCPTemp = str(gettemp())
 
-print("mcp")
+String = "{\"valueSyncSec\":\"" + valueSyncSec + "\","
+String += "\"valueMCPTemp\":\"" + valueMCPTemp + "\"}"
+
+lora.setup()
+lora.send_data(String)
+
+# print("mcp")

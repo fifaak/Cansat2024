@@ -1,32 +1,35 @@
-from time import sleep
-from sx127x.LoRa import LoRa
-from sx127x.board_config import BOARD
+import pandas as pd
+import subprocess
+import time
+import nest_asyncio
+import asyncio
+df = pd.read_csv("./fp.csv")
+nest_asyncio.apply()
 
-# Raspberry Pi SPI pins
-BOARD.setup()
+async def CMD2CODE(cmd):
+    print(f"Executing {cmd}")
+    await asyncio.sleep(0.1)
 
-# LoRa parameters
-frequency = 915.0  # Change this to match your frequency
-tx_power = 17  # dBm
-spreading_factor = 7
-coding_rate = 5
-bandwidth = 125000
+def CMD2FREQ(cmd):
+    return {
+        'tm;mpu;2': 0.1,
+        'tm;bmp;2': 1,
+        'tm;mcp;2': 1,
+        'tm;gps;2': 5
+    }[cmd]
 
-# Initialize LoRa
-lora = LoRa(frequency, tx_power, spreading_factor, coding_rate, bandwidth)
-
-# Initialize LoRa in receive mode
-lora.set_mode_rx()
-
-try:
+async def execute_task(cmd):
     while True:
-        if lora.received_packet():
-            packet = lora.read_payload()
-            print("Received:", packet.decode('utf-8'))
-            # You can add your processing code here
+        await CMD2CODE(cmd)
+        await asyncio.sleep(CMD2FREQ(cmd))
 
-        sleep(1)
+async def main():
+    tasks = [
+        execute_task('tm;mpu;2'),
+        execute_task('tm;bmp;2'),
+        execute_task('tm;mcp;2'),
+        execute_task('tm;gps;2')
+    ]
+    await asyncio.gather(*tasks)
 
-except KeyboardInterrupt:
-    print("Keyboard interrupt detected. Exiting...")
-    lora.set_mode_sleep()
+await main()
