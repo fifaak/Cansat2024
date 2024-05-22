@@ -1,14 +1,22 @@
-import pandas as pd
 import subprocess
-import time
 import nest_asyncio
 import asyncio
-df = pd.read_csv("./fp.csv")
+
 nest_asyncio.apply()
 
-async def CMD2CODE(cmd):
+async def CODE(cmd):
     print(f"Executing {cmd}")
     await asyncio.sleep(0.1)
+
+def module(cmd):
+    if cmd == 'tm;mpu;2':
+        return subprocess.run(['python', 'tm_mpu.py'], capture_output=True, text=True).stdout
+    elif cmd == 'tm;bmp;2':
+        return subprocess.run(['python', 'tm_bmp.py'], capture_output=True, text=True).stdout
+    elif cmd == 'tm;gps;2':
+        return subprocess.run(['python', 'tm_gps.py'], capture_output=True, text=True).stdout
+    elif cmd == 'tm;mcp;2':
+        return subprocess.run(['python', 'tm_mcp.py'], capture_output=True, text=True).stdout
 
 def CMD2FREQ(cmd):
     return {
@@ -20,7 +28,9 @@ def CMD2FREQ(cmd):
 
 async def execute_task(cmd):
     while True:
-        await CMD2CODE(cmd)
+        await CODE(cmd)
+        result = module(cmd)
+        print(result)
         await asyncio.sleep(CMD2FREQ(cmd))
 
 async def main():
@@ -32,4 +42,5 @@ async def main():
     ]
     await asyncio.gather(*tasks)
 
-await main()
+if __name__ == "__main__":
+    asyncio.run(main())
